@@ -1,0 +1,26 @@
+<body>
+  <div class="container">
+    
+    <header>
+      <h1>Corner List</h1>
+           
+      {{> loginButtons}}
+
+      {{#if currentUser}}
+          <form class="new-corner">
+            <input type="text" name="coordinates" placeholder="Type to add new corner" />
+          </form>
+      {{/if}}
+    </header>
+    
+    {{#if currentUser}}
+        <ul>
+          {{#each corners}}
+            {{> corner}}
+          {{/each}}
+        </ul>
+    {{/if}}
+  </div>
+</body>
+
+
