@@ -20,6 +20,7 @@ shell-server@0.2.3            # Server-side component of the `meteor shell` comm
 autopublish@1.0.7             # Publish all data to the clients (for prototyping)
 accounts-ui
 accounts-password
-accounts-facebook
 facebook-config-ui
 bevanhunt:leaflet
+accounts-twitter
+twitter-config-ui
