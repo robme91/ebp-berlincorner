@@ -1,22 +1,11 @@
 <body>
+  <div class="container" >
+      <div id="header">
+          Berlin-Corner
+          <span id="login">{{> loginButtons}}</span>
+      </div>
     {{#if currentUser}}
         {{> map}}
     {{/if}}
-  
-  <div class="container">
-    <header>
-      <h1>Corner List</h1>
-           
-      {{> loginButtons}}   
-    </header>
-    
-    {{#if currentUser}}
-        <ul>
-          {{#each corners}}
-            {{> corner}}
-          {{/each}}
-        </ul>
-    {{/if}}
   </div>
- 
 </body>

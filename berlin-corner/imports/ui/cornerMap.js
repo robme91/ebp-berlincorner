@@ -89,7 +89,7 @@ function handleContextClick(event){
 
 function saveMarkerAsCorner(marker){
     if(marker){
-        Meteor.call('corners.insert', marker.getLatLng());
+       Meteor.call('corners.insert', marker.getLatLng());
     }
     marker.remove();
     refreshCorners();
