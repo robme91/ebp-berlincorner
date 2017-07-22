@@ -10,17 +10,3 @@ Template.body.helpers({
     return Corners.find({});
   },
 });
-
-Template.body.events({
-  'submit .new-corner'(event) {
-    // Prevent default browser form submit
-    event.preventDefault();
-    // Get value from form element
-    const target = event.target;
-    const coordinates = target.coordinates.value;
-    // Insert a corner into the collection
-    Meteor.call('corners.insert', coordinates);
-    // Clear form
-    target.coordinates.value = '';
-  },
-});

@@ -6,19 +6,17 @@ export const Corners = new Mongo.Collection('corners');
 
 Meteor.methods({
 
-  'corners.insert'(coordinates) {
-    check(coordinates, String);
+  'corners.insert'(latLng) {
     // Make sure the user is logged in before inserting a task
     if (! Meteor.userId()) {
       throw new Meteor.Error('not-authorized');
     }
     Corners.insert({
-      coordinates
+      latLng
     });
   },
 
   'corners.remove'(cornerId) {
-    check(cornerId, String);
     Corners.remove(cornerId);
   },
 
