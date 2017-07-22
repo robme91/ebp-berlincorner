@@ -22,9 +22,7 @@ var currentLocation =  L.Control.extend({
     container.innerHTML = "<span style='font-size:25px; padding-left:5px;'>&curren;</span>";
 
     container.onclick = function(){
-      map.locate({setView: true, maxZoom: 20});
-      map.on('locationfound', onLocationFound);
-      map.on('locationerror', onLocationError);
+      map.locate({setView: true, maxZoom: 16});
     }
     return container;
   }
@@ -67,7 +65,7 @@ function onLocationFound(e) {
         fillOpacity: 0.7,
         radius: 5
     }).addTo(map);
-    currentCoords = e.latlng;
+   currentCoords = e.latlng;
 }
 /* current location error*/
 function onLocationError(e) {
@@ -98,12 +96,14 @@ function saveMarkerAsCorner(marker){
 Template.map.onRendered( function() {
     L.Icon.Default.imagePath = '/packages/bevanhunt_leaflet/images/';
 
-    map = L.map('mapId', {doubleClickZoom: false, attributionControl: false}).setView([52.5243700, 13.4105300], 15);
+    map = L.map('mapId', {doubleClickZoom: false, attributionControl: false, zoom: 15, maxZoom: 16}).setView([52.5243700, 13.4105300]);
     L.tileLayer.provider('Stamen.Watercolor').addTo(map);
     
     map.addControl(new currentLocation());
     map.addControl(new shareLocation());
     
+    map.on('locationfound', onLocationFound);
+    map.on('locationerror', onLocationError);
     map.on('contextmenu', handleContextClick);
     refreshCorners();
 });
