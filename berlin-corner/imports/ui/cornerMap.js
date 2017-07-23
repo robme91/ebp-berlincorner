@@ -69,6 +69,7 @@ function onLocationFound(e) {
 }
 /* current location error*/
 function onLocationError(e) {
+    Meteor.call('logToConsole', e.message);
     alert("Standort nicht ermittelbar");
     currentCoords = null;
 }
