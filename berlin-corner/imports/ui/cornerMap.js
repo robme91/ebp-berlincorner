@@ -22,7 +22,7 @@ var currentLocation =  L.Control.extend({
     container.innerHTML = "<span style='font-size:25px; padding-left:5px;'>&curren;</span>";
 
     container.onclick = function(){
-      map.locate({setView: true, maxZoom: 16});
+      map.locate({setView: true, maxZoom: 18});
     }
     return container;
   }
@@ -97,8 +97,9 @@ function saveMarkerAsCorner(marker){
 Template.map.onRendered( function() {
     L.Icon.Default.imagePath = '/packages/bevanhunt_leaflet/images/';
 
-    map = L.map('mapId', {doubleClickZoom: false, attributionControl: false, zoom: 15, maxZoom: 16}).setView([52.5243700, 13.4105300]);
+    map = L.map('mapId', {doubleClickZoom: false, attributionControl: false, zoom: 15, maxZoom: 18, minZoom: 7}).setView([52.5243700, 13.4105300]);
     L.tileLayer.provider('Stamen.Watercolor').addTo(map);
+    //L.tileLayer('http://192.168.56.3/osm_tiles/{z}/{x}/{y}.png').addTo(map);
     
     map.addControl(new currentLocation());
     map.addControl(new shareLocation());
