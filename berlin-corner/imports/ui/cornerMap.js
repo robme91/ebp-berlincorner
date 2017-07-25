@@ -21,7 +21,7 @@ var currentLocation =  L.Control.extend({
     container.style.height = '26px'
     container.style.cursor = "pointer";
     container.style.backgroundSize = "26px 26px";
-    container.style.backgroundImage= "url('images/currentLoc.png')";
+    container.style.backgroundImage= "url('"+ Meteor.absoluteUrl() + "images/currentLoc.png')";
 
     container.onclick = function(){
       map.locate({setView: true, maxZoom: 18});
@@ -135,7 +135,7 @@ Template.map.onRendered( function() {
 
 function setSharedPosition(coords){
     map.setView(coords);
-    L.circle(coords, {
+    currentPosLayer = L.circle(coords, {
         color: '#1990B0',
         fillColor: '#2f9bb7',
         fillOpacity: 0.7,
