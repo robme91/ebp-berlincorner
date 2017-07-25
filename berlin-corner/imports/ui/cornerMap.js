@@ -129,7 +129,7 @@ Template.map.onRendered( function() {
 
 function setSharedPosition(coords){
     map.setView(coords);
-    L.circle(e.latlng, {
+    L.circle(coords, {
         color: '#1990B0',
         fillColor: '#2f9bb7',
         fillOpacity: 0.7,
