@@ -18,8 +18,10 @@ var currentLocation =  L.Control.extend({
 
     container.style.backgroundColor = 'white';     
     container.style.width = '26px';
+    container.style.height = '26px'
     container.style.cursor = "pointer";
-    container.innerHTML = "<span style='font-size:25px; padding-left:5px;'>&curren;</span>";
+    container.style.backgroundSize = "26px 26px";
+    container.style.backgroundImage= "url('images/currentLoc.png')";
 
     container.onclick = function(){
       map.locate({setView: true, maxZoom: 18});
@@ -29,26 +31,22 @@ var currentLocation =  L.Control.extend({
 });
 
 /* the share-location button*/
+var shareURL;
 var shareLocation = L.Control.extend({
   options: {
     position: 'topleft'
   },
 
   onAdd: function (map) {
-    var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
-
-    container.style.backgroundColor = 'white';     
-    container.style.width = '26px';
+    var container = L.DomUtil.create('div');
     container.style.cursor = "pointer";
-    container.innerHTML = "<span style='font-size:25px; padding-left:5px;'>S</span>";
-
-    container.onclick = function(){
-        if(currentCoords != null){
-            alert("share these coords: " + currentCoords);
-        }else{
-            alert("No current location");
-        }
-    }
+    var clickableTwitter = L.DomUtil.create('span');
+    clickableTwitter.id = "twitterCon";
+    var url ='url=' + encodeURI(shareURL);
+    var text ='text=' + encodeURI('I am here ');
+    clickableTwitter.innerHTML = "<a href='https://twitter.com/intent/tweet?" + text + '&' + url + "' target='blank'>Tweet Location</a>"
+    container.appendChild(clickableTwitter);
+    //map add dieses control only when standort teilen was clicked
     return container;
   }
 });
@@ -66,6 +64,9 @@ function onLocationFound(e) {
         radius: 5
     }).addTo(map);
    currentCoords = e.latlng;
+   shareURL = 'https://localhost:8443/' + currentCoords.lat + '/' + currentCoords.lng;
+   Meteor.call('logToConsole', shareURL);
+   map.addControl(new shareLocation());   
 }
 /* current location error*/
 function onLocationError(e) {
@@ -94,6 +95,18 @@ function saveMarkerAsCorner(marker){
     refreshCorners();
 }
 
+
+var sharedCoords;
+FlowRouter.route('/:lat/:lng', {
+    name: "shareCoords",
+    action: function(params, queryParams) {
+        if(!isNaN(params.lat) && !isNaN(params.lng)){
+            sharedCoords = [params.lat, params.lng];
+        }
+        Meteor.call('logToConsole', "Params: " + params.lat + ", " + params.lng);
+    }
+});
+
 Template.map.onRendered( function() {
     L.Icon.Default.imagePath = '/packages/bevanhunt_leaflet/images/';
 
@@ -102,13 +115,27 @@ Template.map.onRendered( function() {
     //L.tileLayer('http://192.168.56.3/osm_tiles/{z}/{x}/{y}.png').addTo(map);
     
     map.addControl(new currentLocation());
-    map.addControl(new shareLocation());
+    //map.addControl(new shareLocation());
     
     map.on('locationfound', onLocationFound);
     map.on('locationerror', onLocationError);
     map.on('contextmenu', handleContextClick);
     refreshCorners();
+    
+    if(sharedCoords){
+        setSharedPosition(sharedCoords);
+    }
 });
+
+function setSharedPosition(coords){
+    map.setView(coords);
+    L.circle(e.latlng, {
+        color: '#1990B0',
+        fillColor: '#2f9bb7',
+        fillOpacity: 0.7,
+        radius: 5
+    }).addTo(map);
+}
 
 var corners;
 function refreshCorners(){
