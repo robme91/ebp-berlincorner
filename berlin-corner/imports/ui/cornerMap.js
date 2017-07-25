@@ -52,10 +52,14 @@ var shareLocation = L.Control.extend({
 });
 
 var currentPosLayer;
+var shareLink;
 /*on locate event set marker at current position*/
 function onLocationFound(e) {
    if(currentPosLayer != null){
         map.removeLayer(currentPosLayer);
+   }
+   if(shareLink != null){
+       map.removeControl(shareLink);
    }
    currentPosLayer = L.circle(e.latlng, {
         color: '#1990B0',
@@ -64,9 +68,11 @@ function onLocationFound(e) {
         radius: 5
     }).addTo(map);
    currentCoords = e.latlng;
-   shareURL = 'https://localhost:8443/' + currentCoords.lat + '/' + currentCoords.lng;
+   //TODO link auf IP Adressse des Netzwerks setzen 
+   shareURL = 'https://192.168.2.105:8443/' + currentCoords.lat + '/' + currentCoords.lng;
    Meteor.call('logToConsole', shareURL);
-   map.addControl(new shareLocation());   
+   shareLink = new shareLocation();
+   map.addControl(shareLink);
 }
 /* current location error*/
 function onLocationError(e) {
