@@ -69,7 +69,7 @@ function onLocationFound(e) {
     }).addTo(map);
    currentCoords = e.latlng;
    //TODO link auf IP Adressse des Netzwerks setzen 
-   shareURL = 'https://192.168.2.105:8443/' + currentCoords.lat + '/' + currentCoords.lng;
+   shareURL = 'https://141.64.165.14:8443/' + currentCoords.lat + '/' + currentCoords.lng;
    Meteor.call('logToConsole', shareURL);
    shareLink = new shareLocation();
    map.addControl(shareLink);
@@ -117,8 +117,10 @@ Template.map.onRendered( function() {
     L.Icon.Default.imagePath = '/packages/bevanhunt_leaflet/images/';
 
     map = L.map('mapId', {doubleClickZoom: false, attributionControl: false, zoom: 15, maxZoom: 18, minZoom: 7}).setView([52.5243700, 13.4105300]);
-    L.tileLayer.provider('Stamen.Watercolor').addTo(map);
-    //L.tileLayer('http://192.168.56.3/osm_tiles/{z}/{x}/{y}.png').addTo(map);
+
+    //L.tileLayer.provider('Stamen.Watercolor').addTo(map);  //Use this for 3th party map tiles
+    //L.tileLayer('http://141.64.165.14:8088/osm_tiles/{z}/{x}/{y}.png').addTo(map); // use this for map tiles within eduroam (change ip according to current connection)
+    L.tileLayer('http://192.168.56.3/osm_tiles/{z}/{x}/{y}.png').addTo(map); // development
     
     map.addControl(new currentLocation());
     //map.addControl(new shareLocation());
